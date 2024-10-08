@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Update - Student-Teacher Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Post a Syllabus Update</h1>
+    </header>
+
+    <section>
+        <form id="post-update-form">
+            <label for="teacherName">Teacher Name:</label>
+            <input type="text" id="teacherName" name="teacherName" required>
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="content">Update Content:</label>
+            <textarea id="content" name="content" required></textarea>
+
+            <button type="submit">Post Update</button>
+        </form>
+    </section>
+
+    <script>
+        document.getElementById('post-update-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const teacherName = document.getElementById('teacherName').value;
+            const subject = document.getElementById('subject').value;
+            const content = document.getElementById('content').value;
+
+            try {
+                const response = await fetch('/teacher-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ teacherName, subject, content }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Post submitted successfully!');
+                } else {
+                    alert(`Error: ${result.msg}`);
+                }
+            } catch (error) {
+                console.error('Error posting update:', error);
+                alert('An error occurred while posting the update.');
+            }
+        });
+    </script>
+</body>
+</html>
