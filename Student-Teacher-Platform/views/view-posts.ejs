@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Posts - Student-Teacher Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Teacher Updates</h1>
+    </header>
+
+    <section id="posts-section">
+        <h2>Latest Updates</h2>
+        <div id="posts">
+            <% posts.forEach(post => { %>
+                <div class="post">
+                    <h3><%= post.subject %></h3>
+                    <p><strong><%= post.teacherName %></strong>: <%= post.content %></p>
+                    <p>Date Posted: <%= new Date(post.datePosted).toLocaleString() %></p>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+</body>
+</html>
