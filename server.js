@@ -68,10 +68,17 @@ app.post('/signup', async (req, res) => {
 
     try {
         await newUser.save();
-        res.json({ msg: 'Signup successful' });
+        res.status(200).json({ 
+            success: true,
+            msg: 'Signup successful! Please login to continue.'
+        });
     } catch (error) {
         console.error('Error creating user:', error);
-        res.status(500).json({ msg: 'Error creating user', error });
+        res.status(500).json({ 
+            success: false,
+            msg: 'Error creating user', 
+            error 
+        });
     }
 });
 

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Student-Teacher Platform</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Add SweetAlert2 for better looking alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <header>
@@ -12,7 +14,8 @@
     </header>
 
     <section>
-        <form action="/signup" method="POST">
+        <!-- Remove the action and method attributes -->
+        <form id="signupForm">
             <label for="username">Name:</label>
             <input type="text" id="username" name="username" required>
 
@@ -31,5 +34,58 @@
             <button type="submit">Sign Up</button>
         </form>
     </section>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value
+            };
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                
+                if (data.msg === 'Signup successful') {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Signup successful! Please login to continue.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/login.html';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.msg || 'Signup failed',
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred during signup',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                console.error('Error:', error);
+            }
+        });
+    </script>
 </body>
 </html>
